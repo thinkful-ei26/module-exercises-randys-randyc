@@ -1,4 +1,4 @@
-/* global store, cuid */
+/* global store, Item */
 
 // eslint-disable-next-line no-unused-vars
 const shoppingList = (function(){
@@ -47,17 +47,22 @@ const shoppingList = (function(){
     }
   
     // render the shopping list in the DOM
-    console.log('`render` ran');
+    // console.log('`render` ran');
     const shoppingListItemsString = generateShoppingItemsString(items);
   
     // insert that HTML into the DOM
     $('.js-shopping-list').html(shoppingListItemsString);
   }
   
-  
-  function addItemToShoppingList(itemName) {
-    store.items.push({ id: cuid(), name: itemName, checked: false });
-  }
+  // function addItemToShoppingList(itemName) {
+  //   try {
+  //     Item.validateName(itemName);
+  //     store.items.push(Item.create(itemName));
+  //     render();
+  //   } catch(error) {
+  //     console.log('Cannot add item: {error.message}')
+  //   };
+  // }
   
   function handleNewItemSubmit() {
     $('#js-shopping-list-form').submit(function (event) {
