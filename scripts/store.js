@@ -13,7 +13,7 @@ const store = (function () {
       // then uses Array method .find() to return the specific item from store.items
     function findById(id) {
       const object = this.items.find(item => item.id === id);
-      console.log(`find by id: ${object}`);
+      console.log(`find by id: `, object);
       return object;
     };
 
@@ -46,11 +46,21 @@ const store = (function () {
 
     function findAndUpdateName(id, newName) {
       try {
-        validateName(newName);
+
+        console.log('id & new name: ', id, newName);
+
+        Item.validateName(newName);
+
+        console.log('>>>>>> ');
+
         const item = this.findById(id);
+
+        console.log('item >>> ', item);
+
         item.name = newName;
-      } catch {
-        console.log('Cannot update name: {error.message}');
+
+      } catch(error) {
+        console.log(`Cannot update name: ${error.message}`);
       };
     }
 

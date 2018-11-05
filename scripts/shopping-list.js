@@ -1,4 +1,6 @@
-/* global store, Item */
+'use strict';
+
+/* global store, cuid */
 
 // eslint-disable-next-line no-unused-vars
 const shoppingList = (function(){
@@ -47,22 +49,17 @@ const shoppingList = (function(){
     }
   
     // render the shopping list in the DOM
-    // console.log('`render` ran');
+    console.log('`render` ran');
     const shoppingListItemsString = generateShoppingItemsString(items);
   
     // insert that HTML into the DOM
     $('.js-shopping-list').html(shoppingListItemsString);
   }
   
-  // function addItemToShoppingList(itemName) {
-  //   try {
-  //     Item.validateName(itemName);
-  //     store.items.push(Item.create(itemName));
-  //     render();
-  //   } catch(error) {
-  //     console.log('Cannot add item: {error.message}')
-  //   };
-  // }
+  
+  function addItemToShoppingList(itemName) {
+    store.items.push({ id: cuid(), name: itemName, checked: false });
+  }
   
   function handleNewItemSubmit() {
     $('#js-shopping-list-form').submit(function (event) {
@@ -74,10 +71,10 @@ const shoppingList = (function(){
     });
   }
   
-  function toggleCheckedForListItem(id) {
-    const foundItem = store.items.find(item => item.id === id);
-    foundItem.checked = !foundItem.checked;
-  }
+  // function toggleCheckedForListItem(id) {
+  //   const foundItem = store.items.find(item => item.id === id);
+  //   foundItem.checked = !foundItem.checked;
+  // }
   
   
   function getItemIdFromElement(item) {
@@ -89,20 +86,22 @@ const shoppingList = (function(){
   function handleItemCheckClicked() {
     $('.js-shopping-list').on('click', '.js-item-toggle', event => {
       const id = getItemIdFromElement(event.currentTarget);
-      toggleCheckedForListItem(id);
+      // toggleCheckedForListItem(id);
+      store.findAndToggleChecked(id);
+
       render();
     });
   }
   
-  function deleteListItem(id) {
-    const index = store.items.findIndex(item => item.id === id);
-    store.items.splice(index, 1);
-  }
+  // function deleteListItem(id) {
+  //   const index = store.items.findIndex(item => item.id === id);
+  //   store.items.splice(index, 1);
+  // }
   
-  function editListItemName(id, itemName) {
-    const item = store.items.find(item => item.id === id);
-    item.name = itemName;
-  }
+  // function editListItemName(id, itemName) {
+  //   const item = store.items.find(item => item.id === id);
+  //   item.name = itemName;
+  // }
   
   function toggleCheckedItemsFilter() {
     store.hideCheckedItems = !store.hideCheckedItems;
@@ -118,8 +117,12 @@ const shoppingList = (function(){
     $('.js-shopping-list').on('click', '.js-item-delete', event => {
       // get the index of the item in store.items
       const id = getItemIdFromElement(event.currentTarget);
+
       // delete the item
-      deleteListItem(id);
+      //deleteListItem(id);
+
+      store.findAndDelete(id); 
+
       // render the updated shopping list
       render();
     });
@@ -130,7 +133,11 @@ const shoppingList = (function(){
       event.preventDefault();
       const id = getItemIdFromElement(event.currentTarget);
       const itemName = $(event.currentTarget).find('.shopping-item').val();
-      editListItemName(id, itemName);
+
+      //editListItemName(id, itemName);
+
+      store.findAndUpdateName(id, itemName);
+
       render();
     });
   }
