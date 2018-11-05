@@ -1,6 +1,34 @@
-const Item = (function() {
-    const foo = 'bar'
+'use strict';
+/* global cuid */
 
-    return {}
+// eslint-disable-next-line no-unused-vars
+const Item = (function() {
+     
+  function validateName(name){
+        
+    if(name === ''){
+      throw TypeError ('Name does not exist.');
+    }
+        
+  }
+    
+  function create(name){
+        
+    return { 
+         
+      id: cuid(),
+      name,
+      checked: false
+    
+    };
+    
+  }
+    
+  return {
+ 
+    validateName,
+    create
+         
+  };
 
 }() );
